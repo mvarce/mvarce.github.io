@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  SOC 125 — Introduction to Statistics in Sociology · Course Hub
+  ----------------------------------------------------------------------------
+  HOW TO EDIT (for the instructor):
+  • This is a single self-contained file. Host it anywhere static:
+    GitHub Pages, Netlify, your MiraCosta faculty page, or link it inside Canvas.
+  • To add your own materials, search this file for the word "REPLACE" and swap
+    the href="#" links for real URLs (Google Drive, Canvas, PDFs, etc.).
+  • The teal box labeled "For the instructor" near the top of the Home view is
+    a note to you — delete that one <div class="instructor-note"> block before
+    sharing with students.
+  • All text is plain HTML — edit freely.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC 125 · Statistics in Sociology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCF8F4;
+    --paper-2:#F5ECE1;
+    --card:#FFFFFF;
+    --ink:#2B2522;
+    --ink-soft:#6E6055;
+    --teal:#3D8B7D;
+    --teal-deep:#2C6557;
+    --coral:#E87B5A;
+    --coral-deep:#C85E3F;
+    --gold:#EFAE3B;
+    --tint-teal:#E6F0EC;
+    --tint-coral:#FBE6DD;
+    --tint-gold:#FBF0D8;
+    --line:#E7DCCD;
+    --shadow:0 1px 2px rgba(43,37,34,.04), 0 8px 24px rgba(43,37,34,.06);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;font-size:18px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.display{font-family:"Bricolage Grotesque","Newsreader",sans-serif;line-height:1.08;letter-spacing:-.01em;font-weight:700}
+  .mono{font-family:"JetBrains Mono",monospace}
+  a{color:var(--teal-deep);text-underline-offset:3px}
+  a:focus-visible,button:focus-visible,input:focus-visible,.tab:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+
+  /* ---------- top nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(252,248,244,.88);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px;margin-right:auto;font-weight:700;font-family:"Bricolage Grotesque",sans-serif;font-size:1.05rem;letter-spacing:-.01em}
+  .brand .mark{width:34px;height:34px;flex:none}
+  .tabs{display:flex;gap:4px;flex-wrap:wrap}
+  .tab{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:.92rem;
+    border:none;background:transparent;color:var(--ink-soft);padding:8px 13px;border-radius:999px;
+    cursor:pointer;transition:all .18s ease;
+  }
+  .tab:hover{color:var(--ink);background:var(--paper-2)}
+  .tab.active{background:var(--ink);color:var(--paper)}
+
+  main{max-width:1080px;margin:0 auto;padding:0 24px 90px}
+  .view{display:none;animation:rise .4s ease both}
+  .view.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--coral-deep)}
+  .lead{font-size:1.18rem;color:var(--ink-soft);max-width:60ch}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:52px 0 40px}
+  .hero h1{font-size:clamp(2.3rem,5vw,3.5rem);margin:.4em 0 .35em;font-weight:800}
+  .hero .accent{color:var(--teal-deep);position:relative;white-space:nowrap}
+  .hero .accent svg{position:absolute;left:0;right:0;bottom:-10px;width:100%;height:12px}
+  .curve-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 22px 16px;position:relative;overflow:hidden}
+  .curve-card .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
+  .curve-card .cap small{color:var(--ink-soft);font-size:.8rem}
+  canvas{display:block;width:100%}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;
+    font-size:.98rem;background:var(--coral);color:#fff;border:none;border-radius:999px;
+    padding:13px 22px;cursor:pointer;text-decoration:none;transition:transform .15s ease,background .2s ease;
+  }
+  .btn:hover{background:var(--coral-deep);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--teal-deep);border:1.5px solid var(--teal)}
+  .btn.ghost:hover{background:var(--tint-teal)}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+
+  /* ---------- pillars ---------- */
+  .section-head{margin:54px 0 22px}
+  .section-head h2{font-size:clamp(1.6rem,3.4vw,2.1rem);margin:.25em 0 .2em}
+  .pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .pillar{
+    text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;cursor:pointer;transition:transform .18s ease,box-shadow .2s ease,border-color .2s;
+    box-shadow:var(--shadow);font-family:inherit;color:inherit;display:block;width:100%;
+  }
+  .pillar:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(43,37,34,.10);border-color:var(--teal)}
+  .pillar .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:15px}
+  .pillar h3{font-size:1.18rem;margin:0 0 6px}
+  .pillar p{margin:0;color:var(--ink-soft);font-size:.98rem;line-height:1.5}
+  .pillar .go{margin-top:14px;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:.85rem;color:var(--teal-deep)}
+
+  /* quick facts strip */
+  .facts{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+  .fact{background:var(--paper-2);border-radius:14px;padding:13px 17px;flex:1 1 150px;min-width:140px}
+  .fact b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.3rem;color:var(--teal-deep);line-height:1.1}
+  .fact span{font-size:.82rem;color:var(--ink-soft)}
+
+  .instructor-note{
+    margin:30px 0 0;border:1.5px dashed var(--teal);background:var(--tint-teal);
+    border-radius:14px;padding:16px 20px;font-size:.92rem;color:var(--teal-deep);
+  }
+  .instructor-note b{font-family:"Bricolage Grotesque",sans-serif}
+
+  /* ---------- units / notes ---------- */
+  .unit{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .unit summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 22px;
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.08rem;
+  }
+  .unit summary::-webkit-details-marker{display:none}
+  .unit summary .num{
+    width:38px;height:38px;flex:none;border-radius:11px;background:var(--tint-gold);color:var(--coral-deep);
+    display:grid;place-items:center;font-size:.95rem;
+  }
+  .unit summary .chev{margin-left:auto;transition:transform .2s ease;color:var(--ink-soft)}
+  .unit[open] summary .chev{transform:rotate(90deg)}
+  .unit .body{padding:0 22px 20px 76px}
+  .unit .body ul{margin:0 0 14px;padding-left:18px;color:var(--ink-soft)}
+  .unit .body li{margin:3px 0}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:.78rem;text-decoration:none;
+    padding:6px 12px;border-radius:999px;background:var(--tint-teal);color:var(--teal-deep);
+    border:1px solid transparent;transition:.15s;
+  }
+  .chip:hover{border-color:var(--teal);background:#fff}
+  .chip.placeholder{border:1px dashed var(--ink-soft);background:transparent;color:var(--ink-soft)}
+
+  /* ---------- generic content cards ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .card h3{font-size:1.22rem;margin:0 0 10px}
+  .card p{margin:0 0 12px;color:var(--ink-soft);font-size:.98rem}
+  .book{display:flex;gap:16px;align-items:flex-start}
+  .book .spine{width:52px;height:72px;border-radius:5px;flex:none;box-shadow:var(--shadow)}
+  .badge{display:inline-block;font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:.72rem;
+    padding:3px 9px;border-radius:6px;background:var(--tint-gold);color:var(--coral-deep);margin-bottom:6px}
+  .badge.free{background:#dff0e9;color:var(--teal-deep)}
+  pre{background:#2B2522;color:#F5ECE1;border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.55;margin:14px 0 0}
+  pre .cmt{color:#9db8af}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:8px 0 0}
+  .steps li{counter-increment:s;position:relative;padding:8px 0 8px 42px;border-bottom:1px solid var(--line);color:var(--ink-soft)}
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:28px;height:28px;background:var(--tint-coral);
+    color:var(--coral-deep);border-radius:8px;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:.82rem}
+
+  /* ---------- interactive tools ---------- */
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;margin-bottom:26px}
+  .tool h3{font-size:1.3rem;margin:0 0 4px}
+  .tool .desc{color:var(--ink-soft);margin:0 0 18px;font-size:.98rem}
+  .tool-grid{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+  .controls label{display:block;font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:.85rem;margin:0 0 4px}
+  .controls .row{margin-bottom:18px}
+  input[type=range]{width:100%;accent-color:var(--teal)}
+  .readout{background:var(--paper-2);border-radius:12px;padding:14px 16px;margin-top:6px}
+  .readout .k{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:.9rem}
+  .readout .k b{font-family:"JetBrains Mono",monospace;color:var(--teal-deep);font-weight:600}
+  .hint{font-size:.84rem;color:var(--ink-soft);margin-top:10px;font-style:italic}
+  .mini-btn{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:.82rem;background:var(--paper-2);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;color:var(--ink)}
+  .mini-btn:hover{background:#fff;border-color:var(--teal)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft);margin-top:10px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  /* ---------- SLO / footer ---------- */
+  .slo{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+  .slo div{background:var(--paper-2);border-radius:12px;padding:16px 18px;font-size:.95rem}
+  .slo b{display:block;font-family:"Bricolage Grotesque",sans-serif;color:var(--teal-deep);font-size:.8rem;margin-bottom:4px;letter-spacing:.04em}
+  footer{border-top:1px solid var(--line);margin-top:30px}
+  .foot-inner{max-width:1080px;margin:0 auto;padding:36px 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--ink-soft);font-size:.9rem}
+  .foot-inner b{font-family:"Bricolage Grotesque",sans-serif;color:var(--ink)}
+
+  @media (max-width:820px){
+    .hero{grid-template-columns:1fr;gap:28px;padding:34px 0 20px}
+    .pillars,.grid2,.slo{grid-template-columns:1fr}
+    .tool-grid{grid-template-columns:1fr}
+    .brand{margin-right:0;width:100%}
+    .tabs{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect width="40" height="40" rx="11" fill="#3D8B7D"/>
+        <path d="M5 27c4 0 5-13 9-13s4 13 8 13 5-9 8-9 0 0 0 0" stroke="#FBF0D8" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <circle cx="14" cy="14" r="2.3" fill="#EFAE3B"/>
+        <circle cx="22" cy="27" r="2.3" fill="#E87B5A"/>
+      </svg>
+      <span>SOC&nbsp;125 · Statistics in Sociology</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course sections">
+      <button class="tab active" data-view="home" role="tab">Home</button>
+      <button class="tab" data-view="notes" role="tab">Lecture Notes</button>
+      <button class="tab" data-view="data" role="tab">Data &amp; SPSS</button>
+      <button class="tab" data-view="tools" role="tab">Try It Live</button>
+      <button class="tab" data-view="assign" role="tab">Assignments</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ HOME ============================ -->
+<section class="view active" id="home" role="tabpanel">
+  <div class="hero">
+    <div>
+      <span class="eyebrow">Welcome to the course</span>
+      <h1>Statistics, <span class="accent">one&nbsp;idea<svg viewBox="0 0 200 12" preserveAspectRatio="none"><path d="M2 8c40-7 158-7 196 0" stroke="#EFAE3B" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span> at a time.</h1>
+      <p class="lead">No math anxiety required. This course turns numbers into stories about people — inequality, identity, community — and gives you the tools to read those stories for yourself. Everything you need lives right here.</p>
+      <div class="btn-row">
+        <button class="btn" data-jump="notes">Start with the notes</button>
+        <button class="btn ghost" data-jump="tools">Play with the tools</button>
+      </div>
+    </div>
+    <div class="curve-card">
+      <canvas id="heroCanvas" height="220" aria-label="A friendly bell curve, the normal distribution"></canvas>
+      <div class="cap">
+        <span class="mono" style="font-size:.85rem;color:var(--teal-deep)">the normal distribution</span>
+        <small>you'll meet this a lot — it's friendlier than it looks</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="eyebrow">Where do you want to go?</span>
+    <h2>Four places to start</h2>
+  </div>
+  <div class="pillars">
+    <button class="pillar" data-jump="notes">
+      <div class="ico" style="background:var(--tint-gold)">📓</div>
+      <h3>Lecture Notes &amp; Explainers</h3>
+      <p>Plain-language walkthroughs of every concept, organized by the 12 units we cover — from levels of measurement to chi-square.</p>
+      <div class="go">Browse the units →</div>
+    </button>
+    <button class="pillar" data-jump="data">
+      <div class="ico" style="background:var(--tint-teal)">🗂️</div>
+      <h3>Datasets &amp; SPSS Guides</h3>
+      <p>Real sociological data to practice with, plus step-by-step SPSS walkthroughs so the software never gets in your way.</p>
+      <div class="go">Get the data →</div>
+    </button>
+    <button class="pillar" data-jump="tools">
+      <div class="ico" style="background:var(--tint-coral)">🎛️</div>
+      <h3>Try It Live</h3>
+      <p>Drag sliders and points to <em>see</em> how a distribution stretches or how a correlation tightens. Intuition first, formulas second.</p>
+      <div class="go">Open the playground →</div>
+    </button>
+    <button class="pillar" data-jump="assign">
+      <div class="ico" style="background:var(--tint-gold)">📝</div>
+      <h3>Assignments &amp; ASA Guide</h3>
+      <p>The research-paper project, how to write a results section in ASA style, and what each assignment is really asking for.</p>
+      <div class="go">See what's due →</div>
+    </button>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>4</b><span>units · CSU &amp; UC transferable</span></div>
+    <div class="fact"><b>B4</b><span>CSU GE · IGETC Area 2A</span></div>
+    <div class="fact"><b>SPSS</b><span>the software we'll use</span></div>
+    <div class="fact"><b>ASA</b><span>citation &amp; results style</span></div>
+  </div>
+
+  <!-- DELETE THIS BLOCK before sharing with students -->
+  <div class="instructor-note">
+    <b>For the instructor:</b> This hub is pre-filled with your course outline.
+    To add your own files, open the HTML and replace every <span class="mono">href="#"</span>
+    link (the dashed "Add link" chips) with a real URL. Delete this note when you're ready to publish.
+  </div>
+</section>
+
+<!-- ============================ NOTES ============================ -->
+<section class="view" id="notes" role="tabpanel">
+  <div class="section-head">
+    <span class="eyebrow">Lecture notes &amp; concept explainers</span>
+    <h2>The course, unit by unit</h2>
+    <p class="lead">Open any unit to see what it covers and grab the materials. Tackle them in order, or jump to whatever you're working on this week.</p>
+  </div>
+  <div id="unitList"></div>
+</section>
+
+<!-- ============================ DATA & SPSS ============================ -->
+<section class="view" id="data" role="tabpanel">
+  <div class="section-head">
+    <span class="eyebrow">Datasets &amp; SPSS walkthroughs</span>
+    <h2>Practice with real data</h2>
+    <p class="lead">We learn statistics by doing statistics. Download a dataset, follow a walkthrough, and the software stops being scary.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Practice datasets</h3>
+      <p>Cleaned, classroom-ready files you can open straight in SPSS. Each one connects to a real question about inequality or social life.</p>
+      <div class="chips" style="margin-top:6px">
+        <!-- REPLACE href="#" with links to your dataset files -->
+        <a class="chip placeholder" href="#">General Social Survey extract · Add link</a>
+        <a class="chip placeholder" href="#">Campus survey data · Add link</a>
+        <a class="chip placeholder" href="#">Census / ACS sample · Add link</a>
+        <a class="chip placeholder" href="#">Codebook (PDF) · Add link</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Getting SPSS</h3>
+      <p>You don't need to buy anything. Here's how to reach SPSS through MiraCosta, plus a free alternative if you'd rather work offline.</p>
+      <div class="chips" style="margin-top:6px">
+        <a class="chip placeholder" href="#">MiraCosta virtual lab · Add link</a>
+        <a class="chip placeholder" href="#">Install guide (PDF) · Add link</a>
+        <a class="chip placeholder" href="#">PSPP (free option) · Add link</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>SPSS walkthrough — your first analysis</h3>
+    <p>A sample of the kind of step-by-step guide you'll find for each technique. This one runs descriptive statistics on a single variable.</p>
+    <ol class="steps">
+      <li>Open your <span class="mono">.sav</span> file in SPSS, then look at the <b>Variable View</b> to confirm each variable's measurement level (nominal, ordinal, or scale).</li>
+      <li>Go to <b>Analyze → Descriptive Statistics → Frequencies</b>.</li>
+      <li>Move your variable into the box, click <b>Statistics</b>, and check mean, median, mode, and standard deviation.</li>
+      <li>Click <b>Charts → Histograms</b> and turn on the normal curve overlay.</li>
+      <li>Run it, then read the output the way we practice in class: shape first, then center, then spread.</li>
+    </ol>
+    <pre><span class="cmt">* The same analysis as SPSS syntax — paste into a Syntax window and run.</span>
+FREQUENCIES VARIABLES=income
+  /STATISTICS=MEAN MEDIAN MODE STDDEV
+  /HISTOGRAM NORMAL.</pre>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>Required materials</h3>
+    <div class="grid2" style="margin-top:6px">
+      <div class="book">
+        <div class="spine" style="background:linear-gradient(160deg,#3D8B7D,#2C6557)"></div>
+        <div>
+          <span class="badge">Primary text</span>
+          <h4 style="margin:0 0 4px;font-family:'Bricolage Grotesque',sans-serif">Essentials of Social Statistics for a Diverse Society</h4>
+          <p style="margin:0;font-size:.9rem;color:var(--ink-soft)">Leon-Guerrero, Frankfort-Nachmias &amp; Davis · 4th ed., SAGE (2020)</p>
+        </div>
+      </div>
+      <div class="book">
+        <div class="spine" style="background:linear-gradient(160deg,#E87B5A,#C85E3F)"></div>
+        <div>
+          <span class="badge free">Free · open access</span>
+          <h4 style="margin:0 0 4px;font-family:'Bricolage Grotesque',sans-serif">Introductory Statistics (OpenStax)</h4>
+          <p style="margin:0;font-size:.9rem;color:var(--ink-soft)">Illowsky &amp; Dean · OpenStax (2014) — read it online or download a PDF at no cost.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TOOLS ============================ -->
+<section class="view" id="tools" role="tabpanel">
+  <div class="section-head">
+    <span class="eyebrow">Try it live</span>
+    <h2>See the statistics move</h2>
+    <p class="lead">Reading about a distribution is one thing — reshaping one with your own hands is another. Play here until the ideas feel obvious.</p>
+  </div>
+
+  <!-- Normal distribution explorer -->
+  <div class="tool">
+    <h3>Normal distribution explorer</h3>
+    <p class="desc">Slide the mean to move the curve, slide the standard deviation to stretch or squeeze it. Watch the 68–95–99.7 (empirical) rule hold no matter what.</p>
+    <div class="tool-grid">
+      <div>
+        <canvas id="normCanvas" height="300"></canvas>
+        <div class="legend">
+          <span><i style="background:rgba(61,139,125,.45)"></i>±1 SD ≈ 68%</span>
+          <span><i style="background:rgba(239,174,59,.40)"></i>±2 SD ≈ 95%</span>
+          <span><i style="background:rgba(232,123,90,.30)"></i>±3 SD ≈ 99.7%</span>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="row">
+          <label for="mean">Mean (μ): <span id="meanVal" class="mono">50</span></label>
+          <input type="range" id="mean" min="20" max="80" value="50" step="1">
+        </div>
+        <div class="row">
+          <label for="sd">Standard deviation (σ): <span id="sdVal" class="mono">10</span></label>
+          <input type="range" id="sd" min="4" max="22" value="10" step="1">
+        </div>
+        <div class="readout">
+          <div class="k"><span>68% of data fall between</span><b id="r68">—</b></div>
+          <div class="k"><span>95% between</span><b id="r95">—</b></div>
+          <div class="k"><span>99.7% between</span><b id="r997">—</b></div>
+        </div>
+        <p class="hint">The shape never changes — only where it sits and how wide it spreads.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regression playground -->
+  <div class="tool">
+    <h3>Correlation &amp; regression sandbox</h3>
+    <p class="desc">Click the plot to add data points, drag them around, and double-click one to remove it. The best-fit line, the equation, and the correlation <span class="mono">r</span> all update live.</p>
+    <div class="tool-grid">
+      <div>
+        <canvas id="regCanvas" height="320" style="cursor:crosshair"></canvas>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+          <button class="mini-btn" id="regClear">Clear all</button>
+          <button class="mini-btn" id="regPos">Strong positive</button>
+          <button class="mini-btn" id="regNone">No relationship</button>
+          <button class="mini-btn" id="regNeg">Strong negative</button>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="readout">
+          <div class="k"><span>Points</span><b id="regN">0</b></div>
+          <div class="k"><span>Correlation r</span><b id="regR">—</b></div>
+          <div class="k"><span>Strength</span><b id="regStr">—</b></div>
+          <div class="k"><span>Best-fit line</span><b id="regEq" style="font-size:.78rem">—</b></div>
+        </div>
+        <p class="hint">r runs from −1 to +1. Near 0 means no straight-line pattern; near ±1 means the points hug the line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ASSIGNMENTS ============================ -->
+<section class="view" id="assign" role="tabpanel">
+  <div class="section-head">
+    <span class="eyebrow">Assignments &amp; project guides</span>
+    <h2>What's being asked of you</h2>
+    <p class="lead">Every assignment here is really practice in one thing: using data to make a careful, honest claim about the social world.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:18px">
+    <span class="badge">Signature project</span>
+    <h3>The research paper</h3>
+    <p>You'll build one complete study from question to conclusion. This is where everything in the course comes together.</p>
+    <ol class="steps">
+      <li>Ask a sociological question worth answering — e.g. gender inequality in STEM, or LGBT+ identification and student success.</li>
+      <li>Run a short literature review and decide which statistical method actually fits your question.</li>
+      <li>Collect survey data, analyze it in SPSS, and interpret what you find.</li>
+      <li>Write it up as an eight-page, double-spaced paper that draws an honest conclusion from your evidence.</li>
+    </ol>
+    <div class="chips" style="margin-top:16px">
+      <a class="chip placeholder" href="#">Full prompt (PDF) · Add link</a>
+      <a class="chip placeholder" href="#">Grading rubric · Add link</a>
+      <a class="chip placeholder" href="#">Survey template · Add link</a>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Writing a results section, ASA style</h3>
+      <p>The other big writing task: report a statistical analysis the way sociologists do. Lead with the finding, then the numbers that support it, in American Sociological Association format.</p>
+      <div class="chips" style="margin-top:6px">
+        <a class="chip placeholder" href="#">ASA quick guide · Add link</a>
+        <a class="chip placeholder" href="#">Annotated example · Add link</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Ongoing practice</h3>
+      <p>Smaller assignments keep the skills warm: textbook problems tied to a social issue, and a campus survey you design, run, and present.</p>
+      <div class="chips" style="margin-top:6px">
+        <a class="chip placeholder" href="#">Problem sets · Add link</a>
+        <a class="chip placeholder" href="#">Campus survey brief · Add link</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>What you'll be able to do by the end</h3>
+    <div class="slo">
+      <div><b>OUTCOME 1</b>Identify, explain, and summarize statistical concepts and terminology.</div>
+      <div><b>OUTCOME 2</b>Apply the sociological imagination to quantitative data.</div>
+      <div><b>OUTCOME 3</b>Determine when, why, and how different statistical tests are used.</div>
+      <div><b>OUTCOME 4</b>Interpret results and apply the findings sociologically.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <b>SOC 125 · Introduction to Statistics in Sociology</b><br>
+      MiraCosta College · Department of Sociology<br>
+      Transfers to CSU &amp; UC · C-ID SOCI-125
+    </div>
+    <div>
+      <b>Instructor</b><br>
+      <!-- REPLACE with your name, email, and office hours -->
+      Add your name · email · office hours here
+    </div>
+    <div>
+      <b>Need help?</b><br>
+      Reach out early and often — that's<br>what office hours are for.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- tab / view switching ---------- */
+const tabs = document.querySelectorAll('.tab');
+const views = document.querySelectorAll('.view');
+function show(id){
+  views.forEach(v=>v.classList.toggle('active', v.id===id));
+  tabs.forEach(t=>t.classList.toggle('active', t.dataset.view===id));
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(id==='tools'){ drawNorm(); drawReg(); }
+  if(id==='home'){ drawHero(); }
+}
+tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.view)));
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.jump)));
+
+/* ---------- crisp canvas helper ---------- */
+function fit(canvas){
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || canvas.parentNode.clientWidth;
+  const h = canvas.height;
+  canvas.width = w * dpr; canvas.style.height = h + 'px';
+  canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, w, h};
+}
+const COL={teal:'#3D8B7D',gold:'#EFAE3B',coral:'#E87B5A',ink:'#2B2522',soft:'#6E6055',line:'#E7DCCD'};
+function gaussian(x,m,s){return Math.exp(-((x-m)**2)/(2*s*s));}
+
+/* ---------- hero curve ---------- */
+function drawHero(){
+  const c=document.getElementById('heroCanvas'); if(!c)return;
+  const {ctx,w,h}=fit(c); ctx.clearRect(0,0,w,h);
+  const m=w/2, s=w/7, pad=14, base=h-22;
+  // soft fill
+  const grad=ctx.createLinearGradient(0,0,0,base);
+  grad.addColorStop(0,'rgba(61,139,125,.22)'); grad.addColorStop(1,'rgba(61,139,125,.02)');
+  ctx.beginPath(); ctx.moveTo(pad,base);
+  for(let x=pad;x<=w-pad;x++){const y=base-(base-pad)*gaussian(x,m,s);ctx.lineTo(x,y);}
+  ctx.lineTo(w-pad,base); ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  // curve line
+  ctx.beginPath();
+  for(let x=pad;x<=w-pad;x++){const y=base-(base-pad)*gaussian(x,m,s); x===pad?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+  ctx.strokeStyle=COL.teal; ctx.lineWidth=2.6; ctx.lineJoin='round'; ctx.stroke();
+  // mean line + dot
+  ctx.strokeStyle='rgba(43,37,34,.18)'; ctx.lineWidth=1.4; ctx.setLineDash([4,5]);
+  ctx.beginPath(); ctx.moveTo(m,base); ctx.lineTo(m,base-(base-pad)*1+8); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=COL.gold; ctx.beginPath(); ctx.arc(m,pad+6,5,0,7); ctx.fill();
+  // baseline
+  ctx.strokeStyle=COL.line; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(pad,base); ctx.lineTo(w-pad,base); ctx.stroke();
+}
+
+/* ---------- normal explorer ---------- */
+const meanEl=document.getElementById('mean'), sdEl=document.getElementById('sd');
+function drawNorm(){
+  const c=document.getElementById('normCanvas'); if(!c)return;
+  const {ctx,w,h}=fit(c); ctx.clearRect(0,0,w,h);
+  const mu=+meanEl.value, sd=+sdEl.value;
+  document.getElementById('meanVal').textContent=mu;
+  document.getElementById('sdVal').textContent=sd;
+  const padX=24, padB=34, padT=14, base=h-padB;
+  // data domain fixed 0..100
+  const X=v=>padX+(v/100)*(w-2*padX);
+  const peak=base-padT;
+  // shaded SD bands (draw widest first)
+  const bands=[[3,'rgba(232,123,90,.28)'],[2,'rgba(239,174,59,.38)'],[1,'rgba(61,139,125,.45)']];
+  bands.forEach(([k,col])=>{
+    ctx.beginPath();
+    const lo=Math.max(0,mu-k*sd), hi=Math.min(100,mu+k*sd);
+    ctx.moveTo(X(lo),base);
+    for(let v=lo;v<=hi;v+=0.5){ctx.lineTo(X(v),base-peak*gaussian(v,mu,sd)/gaussian(mu,mu,sd)*0.94);}
+    ctx.lineTo(X(hi),base); ctx.closePath(); ctx.fillStyle=col; ctx.fill();
+  });
+  // curve
+  ctx.beginPath();
+  for(let v=0;v<=100;v+=0.5){const y=base-peak*gaussian(v,mu,sd)/gaussian(mu,mu,sd)*0.94; v===0?ctx.moveTo(X(v),y):ctx.lineTo(X(v),y);}
+  ctx.strokeStyle=COL.teal; ctx.lineWidth=2.6; ctx.lineJoin='round'; ctx.stroke();
+  // axis
+  ctx.strokeStyle=COL.line; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(padX,base); ctx.lineTo(w-padX,base); ctx.stroke();
+  // mean marker
+  ctx.strokeStyle='rgba(43,37,34,.3)'; ctx.setLineDash([4,5]); ctx.beginPath(); ctx.moveTo(X(mu),base); ctx.lineTo(X(mu),base-peak*0.94); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=COL.soft; ctx.font='12px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('μ='+mu, X(mu), base+20);
+  // ticks at ±1,2,3 sd
+  [-3,-2,-1,1,2,3].forEach(k=>{const v=mu+k*sd; if(v>=0&&v<=100){ctx.fillStyle=COL.soft;ctx.fillText((k>0?'+':'')+k+'σ',X(v),base+20);}});
+  // readouts
+  const fmt=(a,b)=>`${Math.max(0,a).toFixed(0)} – ${Math.min(100,b).toFixed(0)}`;
+  document.getElementById('r68').textContent=fmt(mu-sd,mu+sd);
+  document.getElementById('r95').textContent=fmt(mu-2*sd,mu+2*sd);
+  document.getElementById('r997').textContent=fmt(mu-3*sd,mu+3*sd);
+}
+meanEl&&meanEl.addEventListener('input',drawNorm);
+sdEl&&sdEl.addEventListener('input',drawNorm);
+
+/* ---------- regression sandbox ---------- */
+let pts=[]; let drag=null;
+const regCanvas=document.getElementById('regCanvas');
+function regGeom(){const w=regCanvas.clientWidth,h=320,p=30;return{w,h,p};}
+function toData(px,py){const{w,h,p}=regGeom();return{x:(px-p)/(w-2*p)*100, y:(1-(py-p)/(h-2*p))*100};}
+function toPix(x,y){const{w,h,p}=regGeom();return{px:p+x/100*(w-2*p), py:p+(1-y/100)*(h-2*p)};}
+function stats(){
+  const n=pts.length; if(n<2)return null;
+  const mx=pts.reduce((a,b)=>a+b.x,0)/n, my=pts.reduce((a,b)=>a+b.y,0)/n;
+  let sxx=0,syy=0,sxy=0;
+  pts.forEach(p=>{sxx+=(p.x-mx)**2; syy+=(p.y-my)**2; sxy+=(p.x-mx)*(p.y-my);});
+  if(sxx===0||syy===0)return null;
+  const slope=sxy/sxx, b=my-slope*mx, r=sxy/Math.sqrt(sxx*syy);
+  return{slope,b,r,mx,my};
+}
+function drawReg(){
+  if(!regCanvas)return;
+  const {ctx,w,h}=fit(regCanvas); const {p}=regGeom(); ctx.clearRect(0,0,w,h);
+  // grid
+  ctx.strokeStyle=COL.line; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const gx=p+i/4*(w-2*p),gy=p+i/4*(h-2*p);
+    ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(gx,p);ctx.lineTo(gx,h-p);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(p,gy);ctx.lineTo(w-p,gy);ctx.stroke();ctx.globalAlpha=1;}
+  // axes labels
+  ctx.fillStyle=COL.soft;ctx.font='11px "JetBrains Mono",monospace';
+  ctx.textAlign='center';ctx.fillText('x  →',w/2,h-8);
+  ctx.save();ctx.translate(11,h/2);ctx.rotate(-Math.PI/2);ctx.fillText('y  →',0,0);ctx.restore();
+  // best fit line
+  const s=stats();
+  if(s){
+    const y0=s.slope*0+s.b, y100=s.slope*100+s.b;
+    const a=toPix(0,Math.max(-20,Math.min(120,y0))), c2=toPix(100,Math.max(-20,Math.min(120,y100)));
+    ctx.strokeStyle=COL.coral;ctx.lineWidth=2.6;ctx.beginPath();
+    // clip line to box by sampling
+    ctx.save();ctx.beginPath();ctx.rect(p,p,w-2*p,h-2*p);ctx.clip();
+    ctx.beginPath();ctx.moveTo(a.px,a.py);ctx.lineTo(c2.px,c2.py);ctx.strokeStyle=COL.coral;ctx.lineWidth=2.6;ctx.stroke();
+    ctx.restore();
+  }
+  // points
+  pts.forEach(pt=>{const{px,py}=toPix(pt.x,pt.y);
+    ctx.fillStyle=COL.teal;ctx.beginPath();ctx.arc(px,py,6.5,0,7);ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();});
+  // readouts
+  document.getElementById('regN').textContent=pts.length;
+  if(s){
+    document.getElementById('regR').textContent=(s.r>=0?'+':'')+s.r.toFixed(2);
+    const ar=Math.abs(s.r);
+    const lbl = ar>=.8?'strong':ar>=.5?'moderate':ar>=.2?'weak':'almost none';
+    document.getElementById('regStr').textContent=lbl;
+    document.getElementById('regEq').textContent=`ŷ = ${s.slope.toFixed(2)}x ${s.b>=0?'+':'−'} ${Math.abs(s.b).toFixed(1)}`;
+  }else{
+    document.getElementById('regR').textContent='—';
+    document.getElementById('regStr').textContent='add 2+ points';
+    document.getElementById('regEq').textContent='—';
+  }
+}
+function evt(e){const r=regCanvas.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left;const cy=(e.touches?e.touches[0].clientY:e.clientY)-r.top;return{cx,cy};}
+function hit(cx,cy){for(let i=pts.length-1;i>=0;i--){const{px,py}=toPix(pts[i].x,pts[i].y);if(Math.hypot(px-cx,py-cy)<12)return i;}return -1;}
+if(regCanvas){
+  regCanvas.addEventListener('mousedown',e=>{const{cx,cy}=evt(e);const i=hit(cx,cy);
+    if(i>=0){drag=i;}else{const d=toData(cx,cy);if(d.x>=0&&d.x<=100&&d.y>=0&&d.y<=100){pts.push(d);drawReg();}}});
+  window.addEventListener('mousemove',e=>{if(drag===null)return;const{cx,cy}=evt(e);const d=toData(cx,cy);
+    pts[drag]={x:Math.max(0,Math.min(100,d.x)),y:Math.max(0,Math.min(100,d.y))};drawReg();});
+  window.addEventListener('mouseup',()=>drag=null);
+  regCanvas.addEventListener('dblclick',e=>{const{cx,cy}=evt(e);const i=hit(cx,cy);if(i>=0){pts.splice(i,1);drawReg();}});
+}
+function seed(kind){
+  pts=[];const rnd=(a,b)=>a+Math.random()*(b-a);
+  for(let i=0;i<12;i++){const x=rnd(8,92);let y;
+    if(kind==='pos')y=x+rnd(-12,12);
+    else if(kind==='neg')y=100-x+rnd(-12,12);
+    else y=rnd(10,90);
+    pts.push({x,y:Math.max(4,Math.min(96,y))});}
+  drawReg();
+}
+document.getElementById('regClear')?.addEventListener('click',()=>{pts=[];drawReg();});
+document.getElementById('regPos')?.addEventListener('click',()=>seed('pos'));
+document.getElementById('regNone')?.addEventListener('click',()=>seed('none'));
+document.getElementById('regNeg')?.addEventListener('click',()=>seed('neg'));
+
+/* ---------- build lecture units ---------- */
+const UNITS=[
+  {t:'Introduction to statistics for sociology',sub:['Analyzing sociological data (e.g., census data)','Statistical software packages (e.g., SPSS)','Reporting results in ASA style']},
+  {t:'Descriptive statistics',sub:['Levels of measurement & types of data','Graphs, tables & frequency distributions','Shape of distributions (skew, bimodal, normal)','Central tendency: mean, median, mode','Outliers & measures of variability']},
+  {t:'Probability topics',sub:['Independent & mutually exclusive events','Rules of probability','Contingency tables','Tree & Venn diagrams']},
+  {t:'Populations & samples',sub:['Statistical inference','Sampling methods','Random sampling','Sources of bias']},
+  {t:'The normal distribution',sub:['Standard normal distribution','Using the normal distribution','The empirical rule (68–95–99.7)']},
+  {t:'The central limit theorem',sub:['For sample means','For sums','Why it matters in practice']},
+  {t:'Confidence intervals',sub:['Calculating an interval','Margin of error']},
+  {t:'Hypothesis testing',sub:['Null & alternative hypotheses','Type I & Type II errors','Effect size','z-test & single-sample t-test']},
+  {t:'Comparing two means',sub:['Independent-samples t-test','Paired-samples t-test']},
+  {t:'F distribution & ANOVA',sub:['Assumptions of ANOVA','The F-ratio','Test of two variances']},
+  {t:'Correlation & linear regression',sub:['Significance of the correlation coefficient','The regression equation','Prediction','Outliers']},
+  {t:'The chi-square distribution',sub:['Test of independence','Goodness-of-fit test']}
+];
+const roman=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+const list=document.getElementById('unitList');
+UNITS.forEach((u,i)=>{
+  const d=document.createElement('details'); d.className='unit'; if(i===0)d.open=true;
+  d.innerHTML=`
+    <summary><span class="num mono">${roman[i]}</span>${u.t}
+      <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </summary>
+    <div class="body">
+      <ul>${u.sub.map(s=>`<li>${s}</li>`).join('')}</ul>
+      <div class="chips">
+        <a class="chip placeholder" href="#">Notes · Add link</a>
+        <a class="chip placeholder" href="#">Slides · Add link</a>
+        <a class="chip placeholder" href="#">Practice · Add link</a>
+      </div>
+    </div>`;
+  list.appendChild(d);
+});
+
+/* ---------- init ---------- */
+window.addEventListener('resize',()=>{drawHero();if(document.getElementById('tools').classList.contains('active')){drawNorm();drawReg();}});
+drawHero();
+seed('pos');
+</script>
+</body>
+</html>
